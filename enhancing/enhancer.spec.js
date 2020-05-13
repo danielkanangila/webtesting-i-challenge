@@ -68,3 +68,19 @@ describe("When enhancement fails", () => {
     expect(myEnhancer.enhancement).toEqual(expectedResult);
   });
 });
+
+describe("When modified name property", () => {
+  it("should do not change if the enhancement level is 0", () => {
+    const myEnhancer = enhancer.get(defaultItem);
+
+    expect(myEnhancer.name).toEqual(defaultItem.name);
+  });
+
+  it("should be prefixed by the enhancement level preceded by a plus sign, between brackets. if enhancement level is greater than 0", () => {
+    defaultItem.enhancement = 5;
+    const expectedResult = `[+${defaultItem.enhancement}] ${defaultItem.name}`;
+    const myEnhancer = enhancer.get(defaultItem);
+
+    expect(myEnhancer.name).toEqual(expectedResult);
+  });
+});
