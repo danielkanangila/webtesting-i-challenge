@@ -24,6 +24,12 @@ describe("When enhancement succeeds", () => {
     const myEnhancer = enhancer.succeed(defaultItem);
 
     expect(myEnhancer.enhancement).toEqual(1);
+    expect(
+      enhancer.succeed({ ...defaultItem, enhancement: 5 }).enhancement
+    ).toEqual(6);
+    expect(
+      enhancer.succeed({ ...defaultItem, enhancement: 15 }).enhancement
+    ).toEqual(16);
   });
 
   it("should do not change if enhancement is equal or greater than 20", () => {
@@ -31,6 +37,9 @@ describe("When enhancement succeeds", () => {
     const myEnhancer = enhancer.succeed(defaultItem);
 
     expect(myEnhancer.enhancement).toEqual(20);
+    expect(
+      enhancer.succeed({ ...defaultItem, enhancement: 20 }).enhancement
+    ).toEqual(20);
   });
 
   it("should do not change the durability", () => {
@@ -43,29 +52,39 @@ describe("When enhancement succeeds", () => {
 
 describe("When enhancement fails", () => {
   it("should decrease durability by 5 if enhancement is less than 15", () => {
-    defaultItem.enhancement = 10;
-    const expectedResult = defaultItem.durability - 5;
-
-    const myEnhancer = enhancer.fail(defaultItem);
-
-    expect(myEnhancer.durability).toEqual(expectedResult);
+    expect(
+      enhancer.fail({ ...defaultItem, enhancement: 10 }).durability
+    ).toEqual(95);
+    expect(
+      enhancer.fail({ ...defaultItem, enhancement: 8 }).durability
+    ).toEqual(95);
+    expect(
+      enhancer.fail({ ...defaultItem, enhancement: 14 }).durability
+    ).toEqual(95);
   });
 
   it("should decrease durability by 10 if enhancement is equal or greater than 15", () => {
-    defaultItem.enhancement = 16;
-    const expectedResult = defaultItem.durability - 10;
-
-    const myEnhancer = enhancer.fail(defaultItem);
-
-    expect(myEnhancer.durability).toEqual(expectedResult);
+    expect(
+      enhancer.fail({ ...defaultItem, enhancement: 16 }).durability
+    ).toEqual(90);
+    expect(
+      enhancer.fail({ ...defaultItem, enhancement: 17 }).durability
+    ).toEqual(90);
+    expect(
+      enhancer.fail({ ...defaultItem, enhancement: 20 }).durability
+    ).toEqual(90);
   });
 
   it("should decrease enhancement level by 1 if enhancement is greater than 16", () => {
-    defaultItem.enhancement = 20;
-    const expectedResult = defaultItem.enhancement - 1;
-    const myEnhancer = enhancer.fail(defaultItem);
-
-    expect(myEnhancer.enhancement).toEqual(expectedResult);
+    expect(
+      enhancer.fail({ ...defaultItem, enhancement: 17 }).enhancement
+    ).toEqual(16);
+    expect(
+      enhancer.fail({ ...defaultItem, enhancement: 18 }).enhancement
+    ).toEqual(17);
+    expect(
+      enhancer.fail({ ...defaultItem, enhancement: 20 }).enhancement
+    ).toEqual(19);
   });
 });
 
